@@ -49,8 +49,12 @@ def load_embeddings(embeddings_path):
     ########################
     #### YOUR CODE HERE ####
     ########################
-
-        pass 
+    starspace_embeddings = dict()
+    for line in open(embeddings_path):
+        q, *ex = line.strip().split('\t')
+        starspace_embeddings[q] = np.array(ex, dtype=np.float64)
+        
+    return starspace_embeddings, starspace_embeddings[q].shape[0]
 
 def question_to_vec(question, embeddings, dim):
     """Transforms a string to an embedding by averaging word embeddings."""
@@ -60,8 +64,15 @@ def question_to_vec(question, embeddings, dim):
     ########################
     #### YOUR CODE HERE ####
     ########################
-
-        pass
+    mean = np.zeros(dim)
+    lenght = 0
+    for word in question.split():
+        if word in embeddings:
+            mean += embeddings[word]
+            lenght += 1
+    if lenght != 0:
+        mean /= lenght
+    return mean
 
 
 def unpickle_file(filename):
